@@ -1,0 +1,14 @@
+on: [push]
+
+jobs:
+  openapi_definition_validator:
+    runs-on: ubuntu-latest
+    name: Swagger Editor Validator Remote
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Validate OpenAPI definition
+        uses: char0n/apidom-validate@v1
+        with:
+          definition-file: 'openapi.yaml'
+          fails-on: 1

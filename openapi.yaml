@@ -1,0 +1,24 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+paths:
+  /example:
+    post:
+      tags:
+        - Example
+      operationId: getExamples
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ExampleDto'
+components:
+  schemas:
+    ExampleDto:
+      type: object
+      properties:
+        exampleField:
+          type: string
