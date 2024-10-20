@@ -145,7 +145,7 @@ paths:
 components:
   responses:
     ClientError:
-      description: BadRequest
+      description: ошибка клиента
       content:
         '*/*':
           schema:
