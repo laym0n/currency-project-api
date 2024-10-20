@@ -15,15 +15,15 @@ paths:
             schema:
               $ref: '#/components/schemas/PluginDto'
       responses:
-        200:
+        '200':
           description: Плагин успешно добавлен в Pipeline
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/PluginDto'
-        400:
+        '400':
           $ref: '#/components/responses/BadRequest'
-        500:
+        '500':
           $ref: '#/components/responses/ServerError'
     put:
       tags:
@@ -36,15 +36,15 @@ paths:
             schema:
               $ref: '#/components/schemas/PluginDto'
       responses:
-        200:
+        '200':
           description: Плагин успешно обновлен в Pipeline
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/PluginDto'
-        400:
+        '400':
           $ref: '#/components/responses/BadRequest'
-        500:
+        '500':
           $ref: '#/components/responses/ServerError'
     get:
       tags:
@@ -60,15 +60,15 @@ paths:
             type: string
             enum: [ AUTHENTICATION, PAYMENT, STATISTIC ]
       responses:
-        200:
+        '200':
           description: Успешно найдены плагины
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/GetPluginsResponse'
-        400:
+        '400':
           $ref: '#/components/responses/BadRequest'
-        500:
+        '500':
           $ref: '#/components/responses/ServerError'
   /plugins/{id}:
     delete:
@@ -86,9 +86,11 @@ paths:
             format: uuid
             example: 0801a635-3dc9-4524-bdbc-1671d2bd2105
       responses:
-        400:
+        '200':
+          description: успешно удален плагин
+        '400':
           $ref: '#/components/responses/BadRequest'
-        500:
+        '500':
           $ref: '#/components/responses/ServerError'
   /users:
     get:
@@ -129,15 +131,15 @@ paths:
             enum: [ ASC, DESC ]
             default: DESC
       responses:
-        200:
+        '200':
           description: Успешно найдены пользователи
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/GetUsersResponse'
-        400:
+        '400':
           $ref: '#/components/responses/BadRequest'
-        500:
+        '500':
           $ref: '#/components/responses/ServerError'
 
 components:
