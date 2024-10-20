@@ -22,9 +22,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/PluginDto'
         400:
-          $ref: '#/components/responses/BadRequest'
+          description: BadRequest
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
         500:
-          $ref: '#/components/responses/ServerError'
+          description: ошибка на сервере
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
     put:
       tags:
         - Plugins
