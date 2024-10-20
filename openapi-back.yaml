@@ -6,7 +6,7 @@ paths:
   /plugins:
     post:
       tags:
-        - Plugin
+        - Plugins
       operationId: add
       summary: добавление плагина в Pipeline
       requestBody:
@@ -22,20 +22,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/PluginDto'
         400:
-          description: BadRequest
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorDto'
+          $ref: '#/components/responses/BadRequest'
         500:
-          description: ошибка на сервере
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorDto'
+          $ref: '#/components/responses/ServerError'
     put:
       tags:
-        - Plugin
+        - Plugins
       operationId: update
       summary: обновление плагина в Pipeline
       requestBody:
@@ -51,20 +43,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/PluginDto'
         400:
-          description: BadRequest
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorDto'
+          $ref: '#/components/responses/BadRequest'
         500:
-          description: ошибка на сервере
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorDto'
+          $ref: '#/components/responses/ServerError'
     get:
       tags:
-        - Plugin
+        - Plugins
       operationId: find
       summary: поиск плагинов в Pipeline
       parameters:
@@ -83,21 +67,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetPluginsResponse'
         400:
-          description: BadRequest
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorDto'
+          $ref: '#/components/responses/BadRequest'
         500:
-          description: ошибка на сервере
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorDto'
+          $ref: '#/components/responses/ServerError'
   /plugins/{id}:
     delete:
       tags:
-        - Plugin
+        - Plugins
       operationId: delete
       summary: удаление плагина в Pipeline
       parameters:
@@ -111,18 +87,73 @@ paths:
             example: 0801a635-3dc9-4524-bdbc-1671d2bd2105
       responses:
         400:
-          description: BadRequest
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorDto'
+          $ref: '#/components/responses/BadRequest'
         500:
-          description: ошибка на сервере
+          $ref: '#/components/responses/ServerError'
+  /users:
+    get:
+      tags:
+        - Users
+      operationId: find
+      summary: поиск пользователей, пользующихся Pipeline'ом
+      parameters:
+        - in: query
+          name: pageNumber
+          description: номер запрашиваемой страницы
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - in: query
+          name: pageSize
+          description: размер запрашиваемой страницы
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 10
+        - in: query
+          name: sortField
+          description: название поля для сортировки
+          required: false
+          schema:
+            type: string
+            enum: [balance]
+        - in: query
+          name: sort
+          description: тип сортировки
+          required: false
+          schema:
+            type: string
+            enum: [ASC, DESC]
+            default: DESC
+      responses:
+        200:
+          description: Успешно найдены пользователи
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ErrorDto'
+                $ref: '#/components/schemas/GetUsersResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/ServerError'
+
 components:
+  responses: 
+    BadRequest:
+      description: BadRequest
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/ErrorDto'
+    ServerError:
+      description: ошибка на сервере
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/ErrorDto'
   schemas:
     PluginDto:
       type: object
@@ -145,6 +176,23 @@ components:
 
     PluginType:
       enum: [AUTHENTICATION, PAYMENT, STATISTIC]
+
+    UserDto:
+      type: object
+      description: пользователь валюты
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: идентификатор пользователя
+          example: 0801a635-3dc9-4524-bdbc-1671d2bd2105
+        balance:
+          type: string
+          format: decimal
+          description: текущий баланс пользователя
+      required:
+        - id
+        - balance
 
     ErrorDto:
       type: object
@@ -169,3 +217,32 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PluginDto'
+
+    GetUsersResponse:
+      type: object
+      description: ответ на поиск пользователей
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserDto'
+
+    PaginationDto:
+      type: object
+      description: пагинация
+      properties:
+        totalNumber:
+          type: integer
+          description: общее количество элементов
+        pageSize:
+          type: integer
+          description: размер страницы
+          minimum: 1
+          default: 10
+        pageCount:
+          type: integer
+          description: общее количество страниц
+        pageNumber:
+          type: integer
+          description: номер текущей страницы
+          minimum: 1
