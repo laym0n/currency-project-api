@@ -49,7 +49,7 @@ paths:
     get:
       tags:
         - Plugins
-      operationId: find
+      operationId: findPlugins
       summary: поиск плагинов в Pipeline
       parameters:
         - in: query
@@ -94,7 +94,7 @@ paths:
     get:
       tags:
         - Users
-      operationId: find
+      operationId: findUsers
       summary: поиск пользователей, пользующихся Pipeline'ом
       parameters:
         - in: query
