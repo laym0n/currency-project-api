@@ -219,6 +219,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PluginDto'
+      required:
+        - plugins
 
     GetUsersResponse:
       type: object
@@ -230,6 +232,9 @@ components:
             $ref: '#/components/schemas/UserDto'
         pagination:
           $ref: '#/components/schemas/PaginationDto'
+      required:
+        - users
+        - pagination
 
     PaginationDto:
       type: object
