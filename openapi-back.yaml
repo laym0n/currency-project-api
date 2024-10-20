@@ -228,6 +228,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserDto'
+        pagination:
+          $ref: '#/components/schemas/PaginationDto'
 
     PaginationDto:
       type: object
