@@ -250,3 +250,8 @@ components:
           type: integer
           description: номер текущей страницы
           minimum: 1
+      required:
+        - totalNumber
+        - pageCount
+        - pageSize
+        - pageNumber
