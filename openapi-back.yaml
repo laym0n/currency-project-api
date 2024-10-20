@@ -21,9 +21,9 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/PluginDto'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '500':
+        '4XX':
+          $ref: '#/components/responses/ClientError'
+        '5XX':
           $ref: '#/components/responses/ServerError'
     put:
       tags:
@@ -42,9 +42,9 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/PluginDto'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '500':
+        '4XX':
+          $ref: '#/components/responses/ClientError'
+        '5XX':
           $ref: '#/components/responses/ServerError'
     get:
       tags:
@@ -66,9 +66,9 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/GetPluginsResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '500':
+        '4XX':
+          $ref: '#/components/responses/ClientError'
+        '5XX':
           $ref: '#/components/responses/ServerError'
   /plugins/{id}:
     delete:
@@ -88,9 +88,9 @@ paths:
       responses:
         '200':
           description: успешно удален плагин
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '500':
+        '4XX':
+          $ref: '#/components/responses/ClientError'
+        '5XX':
           $ref: '#/components/responses/ServerError'
   /users:
     get:
@@ -137,14 +137,14 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/GetUsersResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '500':
+        '4XX':
+          $ref: '#/components/responses/ClientError'
+        '5XX':
           $ref: '#/components/responses/ServerError'
 
 components:
   responses:
-    BadRequest:
+    ClientError:
       description: BadRequest
       content:
         '*/*':
