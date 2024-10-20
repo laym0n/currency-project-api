@@ -10,5 +10,5 @@ jobs:
       - name: Validate OpenAPI definition
         uses: char0n/apidom-validate@v1
         with:
-          definition-file: 'openapi.yaml'
+          definition-file: 'openapi-back.yaml'
           fails-on: 1

@@ -1,0 +1,171 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+paths:
+  /plugins:
+    post:
+      tags:
+        - Plugin
+      operationId: add
+      summary: добавление плагина в Pipeline
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PluginDto'
+      responses:
+        200:
+          description: Плагин успешно добавлен в Pipeline
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PluginDto'
+        400:
+          description: BadRequest
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        500:
+          description: ошибка на сервере
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+    put:
+      tags:
+        - Plugin
+      operationId: update
+      summary: обновление плагина в Pipeline
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PluginDto'
+      responses:
+        200:
+          description: Плагин успешно обновлен в Pipeline
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PluginDto'
+        400:
+          description: BadRequest
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        500:
+          description: ошибка на сервере
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+    get:
+      tags:
+        - Plugin
+      operationId: find
+      summary: поиск плагинов в Pipeline
+      parameters:
+        - in: query
+          name: type
+          description: тип плагина
+          required: false
+          schema:
+            type: string
+            enum: [AUTHENTICATION, PAYMENT, STATISTIC]
+      responses:
+        200:
+          description: Успешно найдены плагины
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GetPluginsResponse'
+        400:
+          description: BadRequest
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        500:
+          description: ошибка на сервере
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+  /plugins/{id}:
+    delete:
+      tags:
+        - Plugin
+      operationId: delete
+      summary: удаление плагина в Pipeline
+      parameters:
+        - in: path
+          name: id
+          description: идентификатор плагина
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 0801a635-3dc9-4524-bdbc-1671d2bd2105
+      responses:
+        400:
+          description: BadRequest
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        500:
+          description: ошибка на сервере
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+components:
+  schemas:
+    PluginDto:
+      type: object
+      description: плагин, работающий в Pipeline
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: идентификатор плагина
+          example: 0801a635-3dc9-4524-bdbc-1671d2bd2105
+        host:
+          type: string
+          description: хост для запросов к плагину
+          example: http://localhost:8080
+        type:
+          $ref: '#/components/schemas/PluginType'
+      required:
+        - host
+        - type
+
+    PluginType:
+      enum: [AUTHENTICATION, PAYMENT, STATISTIC]
+
+    ErrorDto:
+      type: object
+      description: описание ошибки
+      properties:
+        title:
+          type: string
+          description: заголовок ошибки
+          example: NullPointerException
+        description:
+          type: string
+          description: описание ошибки
+      required:
+        - title
+        - description
+
+    GetPluginsResponse:
+      type: object
+      description: ответ на поиск плагинов
+      properties:
+        plugins:
+          type: array
+          items:
+            $ref: '#/components/schemas/PluginDto'
