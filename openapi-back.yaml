@@ -58,7 +58,7 @@ paths:
           required: false
           schema:
             type: string
-            enum: [AUTHENTICATION, PAYMENT, STATISTIC]
+            enum: [ AUTHENTICATION, PAYMENT, STATISTIC ]
       responses:
         200:
           description: Успешно найдены плагины
@@ -119,14 +119,14 @@ paths:
           required: false
           schema:
             type: string
-            enum: [balance]
+            enum: [ balance ]
         - in: query
           name: sort
           description: тип сортировки
           required: false
           schema:
             type: string
-            enum: [ASC, DESC]
+            enum: [ ASC, DESC ]
             default: DESC
       responses:
         200:
@@ -141,7 +141,7 @@ paths:
           $ref: '#/components/responses/ServerError'
 
 components:
-  responses: 
+  responses:
     BadRequest:
       description: BadRequest
       content:
@@ -175,7 +175,7 @@ components:
         - type
 
     PluginType:
-      enum: [AUTHENTICATION, PAYMENT, STATISTIC]
+      enum: [ AUTHENTICATION, PAYMENT, STATISTIC ]
 
     UserDto:
       type: object
