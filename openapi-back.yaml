@@ -9,6 +9,8 @@ paths:
         - Plugins
       operationId: add
       summary: добавление плагина в Pipeline
+      security:
+        - JwtToken: [ ]
       requestBody:
         content:
           application/json:
@@ -30,6 +32,8 @@ paths:
         - Plugins
       operationId: update
       summary: обновление плагина в Pipeline
+      security:
+        - JwtToken: [ ]
       requestBody:
         content:
           application/json:
@@ -51,6 +55,8 @@ paths:
         - Plugins
       operationId: findPlugins
       summary: поиск плагинов в Pipeline
+      security:
+        - JwtToken: [ ]
       parameters:
         - in: query
           name: type
@@ -76,6 +82,8 @@ paths:
         - Plugins
       operationId: delete
       summary: удаление плагина в Pipeline
+      security:
+        - JwtToken: [ ]
       parameters:
         - in: path
           name: id
@@ -98,6 +106,8 @@ paths:
         - Users
       operationId: findUsers
       summary: поиск пользователей, пользующихся Pipeline'ом
+      security:
+        - JwtToken: [ ]
       parameters:
         - in: query
           name: pageNumber
