@@ -2,8 +2,10 @@ openapi: 3.0.1
 info:
   title: OpenAPI definition
   version: v0
+servers:
+  - url: http://localhost:8080
 paths:
-  /plugins:
+  /plugins/:
     post:
       tags:
         - Plugins
@@ -100,7 +102,7 @@ paths:
           $ref: '#/components/responses/ClientError'
         '5XX':
           $ref: '#/components/responses/ServerError'
-  /users:
+  /users/:
     get:
       tags:
         - Users
