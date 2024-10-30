@@ -166,6 +166,17 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CurrencyAddDto'
+      responses:
+        '200':
+          description: получена ссылка на оплату
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Link'
+        '4XX':
+          $ref: '#/components/responses/ClientError'
+        '5XX':
+          $ref: '#/components/responses/ServerError'
   /balance/subtract:
     post:
       tags:
@@ -179,6 +190,17 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CurrencySubtractdto'
+      responses:
+        '200':
+          description: валюта вычтена
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Link'
+        '4XX':
+          $ref: '#/components/responses/ClientError'
+        '5XX':
+          $ref: '#/components/responses/ServerError'
 
 components:
   responses:
@@ -228,7 +250,7 @@ components:
           example: 0801a635-3dc9-4524-bdbc-1671d2bd2105
         balance:
           type: string
-          format: float
+          format: number
           description: текущий баланс пользователя
       required:
         - id
@@ -306,7 +328,7 @@ components:
           type: string
           format: uuid
         amount:
-          type: float
+          type: number
     CurrencyAddDto:
       type: object
       description: вычитание
@@ -315,6 +337,12 @@ components:
           type: string
           format: uuid
         amount:
-          type: float
+          type: number
         price:
-          type: float
+          type: number
+    LinkDto:
+      type: object
+      description: ссылка на оплату
+      properties:
+        link: string
+        
