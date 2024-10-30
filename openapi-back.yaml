@@ -172,7 +172,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Link'
+                $ref: '#/components/schemas/LinkDto'
         '4XX':
           $ref: '#/components/responses/ClientError'
         '5XX':
@@ -196,7 +196,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Link'
+                $ref: '#/components/schemas/LinkDto'
         '4XX':
           $ref: '#/components/responses/ClientError'
         '5XX':
@@ -344,5 +344,6 @@ components:
       type: object
       description: ссылка на оплату
       properties:
-        link: string
+        link:
+          type: string
         
