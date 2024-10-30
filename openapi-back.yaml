@@ -151,6 +151,32 @@ paths:
           $ref: '#/components/responses/ClientError'
         '5XX':
           $ref: '#/components/responses/ServerError'
+  /balance/add:
+    post:
+      tags:
+        - Users
+      operationId: addBalance
+      summary: получение ссылки на покупку валюты
+      security:
+        - JwtToken: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CurrencyAddDto'
+  /balance/subtract:
+    post:
+      tags:
+        - Users
+      operationId: subtractBalance
+      summary: списание валюты
+      security:
+        - JwtToken: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CurrencySubtractdto'
 
 components:
   responses:
@@ -200,7 +226,7 @@ components:
           example: 0801a635-3dc9-4524-bdbc-1671d2bd2105
         balance:
           type: string
-          format: decimal
+          format: float
           description: текущий баланс пользователя
       required:
         - id
@@ -270,3 +296,23 @@ components:
         - pageCount
         - pageSize
         - pageNumber
+    CurrencySubtractdto:
+      type: object
+      description: вычитание
+      properties:
+        userId:
+          type: string
+          format: uuid
+        amount:
+          type: float
+    CurrencyAddDto:
+      type: object
+      description: вычитание
+      properties:
+        userId:
+          type: string
+          format: uuid
+        amount:
+          type: float
+        price:
+          type: float
