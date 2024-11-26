@@ -1,349 +1,159 @@
-openapi: 3.0.1
+openapi: 3.0.0
 info:
-  title: OpenAPI definition
-  version: v0
-servers:
-  - url: http://localhost:8080
+  version: 1.0.0
+  title: ML Web Editor API
+  contact:
+    name: Contact the "; drop table users" team
+    email: iisergeev_2@edu.hse.ru
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+externalDocs:
+  description: "Find out the MLDev docs."
+  url: 'https://gitlab.com/mlrep/mldev/-/wikis/new-format-of-experiment.yml-configuration#step5'
 paths:
-  /plugins/:
-    post:
-      tags:
-        - Plugins
-      operationId: add
-      summary: добавление плагина в Pipeline
-      security:
-        - JwtToken: [ ]
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PluginDto'
-      responses:
-        '200':
-          description: Плагин успешно добавлен в Pipeline
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/PluginDto'
-        '4XX':
-          $ref: '#/components/responses/ClientError'
-        '5XX':
-          $ref: '#/components/responses/ServerError'
-    put:
-      tags:
-        - Plugins
-      operationId: update
-      summary: обновление плагина в Pipeline
-      security:
-        - JwtToken: [ ]
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PluginDto'
-      responses:
-        '200':
-          description: Плагин успешно обновлен в Pipeline
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/PluginDto'
-        '4XX':
-          $ref: '#/components/responses/ClientError'
-        '5XX':
-          $ref: '#/components/responses/ServerError'
+  /tokens-info:
     get:
-      tags:
-        - Plugins
-      operationId: findPlugins
-      summary: поиск плагинов в Pipeline
-      security:
-        - JwtToken: [ ]
-      parameters:
-        - in: query
-          name: type
-          description: тип плагина
-          required: false
-          schema:
-            type: string
-            enum: [ AUTHENTICATION, PAYMENT, STATISTIC ]
+      summary: Getting code tokens
       responses:
         '200':
-          description: Успешно найдены плагины
+          description: Tokens successfully retrieved
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/GetPluginsResponse'
-        '4XX':
-          $ref: '#/components/responses/ClientError'
-        '5XX':
-          $ref: '#/components/responses/ServerError'
-  /plugins/{id}:
-    delete:
-      tags:
-        - Plugins
-      operationId: delete
-      summary: удаление плагина в Pipeline
-      security:
-        - JwtToken: [ ]
+                type: array
+                items:
+                  $ref: '#/components/schemas/TokenDto'
+  /file:
+    post:
+      summary: Providing source code
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileDataDto'
+      responses:
+        '200':
+          description: Tokens successfully provided
+  /file/{id}:
+    get:
+      summary: Getting an updated source code
       parameters:
         - in: path
           name: id
-          description: идентификатор плагина
+          description: plugin identifier
           required: true
           schema:
             type: string
-            format: uuid
             example: 0801a635-3dc9-4524-bdbc-1671d2bd2105
       responses:
         '200':
-          description: успешно удален плагин
-        '4XX':
-          $ref: '#/components/responses/ClientError'
-        '5XX':
-          $ref: '#/components/responses/ServerError'
-  /users/:
-    get:
-      tags:
-        - Users
-      operationId: findUsers
-      summary: поиск пользователей, пользующихся Pipeline'ом
-      security:
-        - JwtToken: [ ]
-      parameters:
-        - in: query
-          name: pageNumber
-          description: номер запрашиваемой страницы
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-            default: 1
-        - in: query
-          name: pageSize
-          description: размер запрашиваемой страницы
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-            default: 10
-        - in: query
-          name: sortField
-          description: название поля для сортировки
-          required: false
-          schema:
-            type: string
-            enum: [ balance ]
-        - in: query
-          name: sort
-          description: тип сортировки
-          required: false
-          schema:
-            type: string
-            enum: [ ASC, DESC ]
-            default: DESC
-      responses:
-        '200':
-          description: Успешно найдены пользователи
+          description: File successfuly retrieved
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/GetUsersResponse'
-        '4XX':
-          $ref: '#/components/responses/ClientError'
-        '5XX':
-          $ref: '#/components/responses/ServerError'
-  /balance/add:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FileDataDto'
+
+  /structure-info:
     post:
-      tags:
-        - Users
-      operationId: addBalance
-      summary: получение ссылки на покупку валюты
-      security:
-        - JwtToken: [ ]
+      summary: Providing source code
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CurrencyAddDto'
+              type: string
       responses:
         '200':
-          description: получена ссылка на оплату
+          description: Tokens successfully provided
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/LinkDto'
-        '4XX':
-          $ref: '#/components/responses/ClientError'
-        '5XX':
-          $ref: '#/components/responses/ServerError'
-  /balance/subtract:
-    post:
-      tags:
-        - Users
-      operationId: subtractBalance
-      summary: списание валюты
-      security:
-        - JwtToken: [ ]
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CurrencySubtractdto'
-      responses:
-        '200':
-          description: валюта вычтена
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/LinkDto'
-        '4XX':
-          $ref: '#/components/responses/ClientError'
-        '5XX':
-          $ref: '#/components/responses/ServerError'
+                $ref: '#/components/schemas/ExperimentDto'
 
 components:
   responses:
     ClientError:
-      description: ошибка клиента
+      description: client error
       content:
         '*/*':
           schema:
             $ref: '#/components/schemas/ErrorDto'
     ServerError:
-      description: ошибка на сервере
+      description: server error
       content:
         '*/*':
           schema:
             $ref: '#/components/schemas/ErrorDto'
   schemas:
-    PluginDto:
-      type: object
-      description: плагин, работающий в Pipeline
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: идентификатор плагина
-          example: 0801a635-3dc9-4524-bdbc-1671d2bd2105
-        host:
-          type: string
-          description: хост для запросов к плагину
-          example: http://localhost:8080
-        type:
-          $ref: '#/components/schemas/PluginType'
-      required:
-        - host
-        - type
-
-    PluginType:
-      enum: [ AUTHENTICATION, PAYMENT, STATISTIC ]
-
-    UserDto:
-      type: object
-      description: пользователь валюты
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: идентификатор пользователя
-          example: 0801a635-3dc9-4524-bdbc-1671d2bd2105
-        balance:
-          type: string
-          format: number
-          description: текущий баланс пользователя
-      required:
-        - id
-        - balance
-
     ErrorDto:
       type: object
-      description: описание ошибки
+      description: error description
       properties:
         title:
           type: string
-          description: заголовок ошибки
+          description: error title
           example: NullPointerException
         description:
           type: string
-          description: описание ошибки
+          description: error description
       required:
         - title
         - description
-
-    GetPluginsResponse:
+    TokenDto:
       type: object
-      description: ответ на поиск плагинов
+      description: A code's token
       properties:
-        plugins:
+        kind:
+          type: string
+        value:
+          type: string
+    ExperimentDto:
+      type: object
+      description: An experiment
+      properties:
+        stages:
           type: array
           items:
-            $ref: '#/components/schemas/PluginDto'
-      required:
-        - plugins
-
-    GetUsersResponse:
+            $ref: '#/components/schemas/PipelineDto'
+    PipelineDto:
       type: object
-      description: ответ на поиск пользователей
+      description: An experiment's pipeline
       properties:
-        users:
+        stages:
           type: array
           items:
-            $ref: '#/components/schemas/UserDto'
-        pagination:
-          $ref: '#/components/schemas/PaginationDto'
-      required:
-        - users
-        - pagination
-
-    PaginationDto:
+            $ref: '#/components/schemas/StageDto'
+    StageDto:
       type: object
-      description: пагинация
+      description: A pipeline's stage
       properties:
-        totalNumber:
-          type: integer
-          description: общее количество элементов
-        pageSize:
-          type: integer
-          description: размер страницы
-          minimum: 1
-          default: 10
-        pageCount:
-          type: integer
-          description: общее количество страниц
-        pageNumber:
-          type: integer
-          description: номер текущей страницы
-          minimum: 1
-      required:
-        - totalNumber
-        - pageCount
-        - pageSize
-        - pageNumber
-    CurrencySubtractdto:
-      type: object
-      description: вычитание
-      properties:
-        userId:
+        input:
+          type: array
+          items:
+            type: string
+        env:
+          type: array
+          items:
+            type: string
+        outputs:
+          type: array
+          items:
+            type: string
+        script:
           type: string
-          format: uuid
-        amount:
-          type: number
-    CurrencyAddDto:
+        monitoring:
+          type: array
+          items:
+            type: string
+    FileDataDto:
       type: object
-      description: вычитание
+      description: A file data
       properties:
-        userId:
+        id:
           type: string
-          format: uuid
-        amount:
-          type: number
-        price:
-          type: number
-    LinkDto:
-      type: object
-      description: ссылка на оплату
-      properties:
-        link:
+        path:
           type: string
-        
+        contents:
+          type: string
